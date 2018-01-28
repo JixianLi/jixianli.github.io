@@ -10,14 +10,73 @@
         Read a book, watch a movie, talk to your friends, have a party, have a life! Don't waste your time reading this title.
         Ohhhhh, you've already read it. Well, maybe next time you could do something a little bit smarter than this. Oh dear,
         you are so cute!</title>
+  <style>
+  body *{
+    font-family: Courier
+  }
+  </style>
 </head>
 
 <body>
-  <h1>Jixian Li</h1>
-  <p>
-    PhD Student<br />
-    Department of Computer Science<br />
-    Email:<a href='mailto:jixianli@email.arizona.edu'>jixianli@email.arizona.edu</a> <br />
-  </p>
+  <script>
+    function meow(e){ e.style.color = 'black'}
+    function unmeow(e){e.style.color = 'white'}
+  </script>
+  <div style='width:600px; margin:auto auto;'>
+    <div style="float:top">
+        <div style='display:inline-block'>
+          <h1>Jixian Li</h1>
+          <p>
+            PhD Student<br />
+            <a href='https://www.cs.arizona.edu/'>Department of Computer Science</a> <br />
+            <a href='http://www.arizona.edu/'>University of Arizona</a><br />
+            Email: <a href='mailto:jixianli@email.arizona.edu'>email me</a><br />
+            Advisor: <a href="https://jalevine.bitbucket.io/">Joshua A. Levine</a>
+          </p>
+        </div>
+        <div style='display:inline-block; float:right'>
+          <img src='duoduo.jpg' alt='Imagine a cat picture here' title='My cat' height='186'/>
+        </div>
+    </div>
+
+    <p onmouseover="meow(this)" onmouseout='unmeow(this)'style='color:white'> *** MEOW *** </p>
+    <h1>Me</h1>
+    <p>
+      I am a PhD student at the University of Arizona. My advisor is Prof. Joshua A. Levine.
+      I research mainly visualization and a little bit of machine learning. I am currently experimenting using some generative model to
+      assist researchers visualize and analyze [time-varying/multivariate] volumetric data.
+    </p>
+    <p>
+      From time to time, I might also be working on any topics relate to computing, algorithm, graphics, topology, cats, etc.
+    </p>
+
+    <p onmouseover="meow(this)" onmouseout='unmeow(this)'style='color:white'> *** MEOW *** </p>
+    <h1>Work</h1>
+    <table>
+      <tr>
+        <td>
+          Matthhew Berger, Jixian Li, Joshua A. Levine.<br/> A Generative Model for Volume Rendering.<br /> Under review(TVCG), 2017
+        </td>
+        <td>
+          <a href="https://arxiv.org/abs/1710.09545">arxiv</a>
+          <a href="https://github.com/matthewberger/tfgan">project</a>
+        </td>
+      </tr>
+    </table>
+
+    <p onmouseover="meow(this)" onmouseout='unmeow(this)'style='color:white'> *** MEOW *** </p>
+    <h1>Joke</h1>
+    <ul>
+      <li>Q: How many prolog programmers does it take to change a lightbulb?</li>
+      <li>A: Yes.</li>
+    </ul>
+
+    <p onmouseover="meow(this)" onmouseout='unmeow(this)'style='color:white'> *** MEOW *** </p>
+    <h1>Meow</h1>
+    <a href = 'https://xkcd.com/1739/'>
+      <img src='https://imgs.xkcd.com/comics/fixing_problems.png' title='credit to: xkcd.com' alt='https://xkcd.com/1739/'/>
+    </a>
+    <p onmouseover="meow(this)" onmouseout='unmeow(this)'style='color:white'> *** MEOW *** </p>
+  </div>
 </body>
 </html>
