@@ -1,90 +1,464 @@
-<html>
-
+<!doctype html>
+<html lang="en">
 <head>
-  <title>Jixian Li 李积贤
-  </title>
-  <style>
-    body * {
-      font-family: Courier
-    }
-    .teaser{
-      width: 560px;
-    }
-    .paper{
-      border: 1px solid #ddd;
-      width: 560px;
-    }
-    li{
-      margin: 20px 0;
-    }
-  </style>
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-  <script>
-    $(function() {
-      $("#pub").load("publication.html");
-    });
-  </script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jixian Li Homepage</title>
+<meta name="description" content="Jixian Li, research associate at TACC: visualization, uncertainty, topology and machine learning for scientific data.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Silkscreen&display=swap">
+<style>
+  /* Layout: a Windows 2000 style desktop. Plain steel-blue desktop, grey bevelled windows stacked down the middle, a taskbar fixed at the bottom. Deliberately single-theme. */
+  :root {
+    --desktop-blue: #3a6ea5;
+    --title-navy: #000080;
+    --chrome: #c0c0c0;
+    --chrome-light: #ffffff;
+    --chrome-dark: #808080;
+    --chrome-shadow: #262626;
+    --paper: #ffffff;
+    --ink: #161616;
+    --ink-muted: #555555;
+    --hot-pink: #d21cb8;
+    --link: #0000cc;
+    --link-visited: #551a8b;
+    --font-pixel: "Silkscreen", "Courier New", monospace;
+    --font-comic: "Comic Neue", "Comic Sans MS", "Chalkboard SE", cursive;
+    color-scheme: light;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  img { max-width: 100%; }
+  [hidden] { display: none !important; }
+  body {
+    margin: 0;
+    background: var(--desktop-blue);
+    color: var(--ink);
+    font-family: var(--font-comic);
+    font-size: 17px;
+    line-height: 1.5;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 20px calc(64px + env(safe-area-inset-bottom, 0px));
+  }
+
+  a { color: var(--link); }
+  a:visited { color: var(--link-visited); }
+  a:focus-visible, button:focus-visible { outline: 2px dotted var(--ink); outline-offset: 2px; }
+
+  .pixel-banner {
+    font-family: var(--font-pixel);
+    color: var(--chrome-light);
+    text-align: center;
+    font-size: clamp(22px, 5vw, 44px);
+    line-height: 1.15;
+    margin: 0 auto 18px;
+    max-width: 960px;
+    text-wrap: balance;
+    text-shadow:
+      3px 0 0 var(--chrome-shadow), -3px 0 0 var(--chrome-shadow),
+      0 3px 0 var(--chrome-shadow), 0 -3px 0 var(--chrome-shadow),
+      3px 3px 0 var(--chrome-shadow), -3px -3px 0 var(--chrome-shadow),
+      3px -3px 0 var(--chrome-shadow), -3px 3px 0 var(--chrome-shadow),
+      6px 6px 0 var(--chrome-dark);
+  }
+
+  .wallpaper {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: clamp(14px, 4vw, 40px);
+    display: grid;
+    gap: clamp(18px, 4vw, 34px);
+  }
+
+  .marquee {
+    overflow: hidden;
+    background: var(--ink);
+    color: #fff200;
+    font-family: var(--font-pixel);
+    font-size: 14px;
+    padding: 6px 0;
+    border: 2px solid var(--chrome-light);
+    white-space: nowrap;
+  }
+  .marquee span { display: inline-block; padding-left: 100%; animation: marquee 22s linear infinite; }
+  @keyframes marquee { to { transform: translateX(-100%); } }
+
+  .window {
+    background: var(--chrome);
+    padding: 3px;
+    border: 2px solid;
+    border-color: var(--chrome-light) var(--chrome-shadow) var(--chrome-shadow) var(--chrome-light);
+    box-shadow: inset -2px -2px 0 var(--chrome-dark), inset 2px 2px 0 #dfdfdf, 8px 8px 0 rgba(30, 0, 40, 0.35);
+    min-width: 0;
+  }
+  .title-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    background: linear-gradient(90deg, var(--title-navy), #1084d0);
+    color: var(--chrome-light);
+    font-weight: 700;
+    padding: 3px 4px 3px 8px;
+  }
+  .title-bar h2 { font-size: 16px; margin: 0; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .title-buttons { display: flex; gap: 3px; flex-shrink: 0; }
+  .title-button {
+    font-family: var(--font-comic);
+    font-weight: 700;
+    font-size: 14px;
+    background: var(--chrome);
+    color: var(--ink);
+    border: 2px solid;
+    border-color: var(--chrome-light) var(--chrome-shadow) var(--chrome-shadow) var(--chrome-light);
+    padding: 0 6px;
+    line-height: 1.3;
+    cursor: pointer;
+  }
+  .title-button:active, .title-button[aria-pressed="true"] { border-color: var(--chrome-shadow) var(--chrome-light) var(--chrome-light) var(--chrome-shadow); }
+  .window.folded .window-body { display: none; }
+  .window.folded .pixel-hand { display: none; }
+  .window.maximized {
+    position: fixed; z-index: 15;
+    top: calc(8px + env(safe-area-inset-top, 0px));
+    left: max(8px, env(safe-area-inset-left, 0px));
+    right: max(8px, env(safe-area-inset-right, 0px));
+    bottom: calc(48px + env(safe-area-inset-bottom, 0px));
+    display: flex; flex-direction: column;
+  }
+  .window.maximized .window-body { flex: 1; overflow: auto; }
+  .window.maximized .pixel-hand { display: none; }
+  body.has-maximized-window { overflow: hidden; }
+  .window-body {
+    background: var(--paper);
+    margin-top: 3px;
+    border: 2px solid;
+    border-color: var(--chrome-dark) var(--chrome-light) var(--chrome-light) var(--chrome-dark);
+    padding: clamp(14px, 3vw, 26px);
+  }
+  .window-body > :first-child { margin-top: 0; }
+  .window-body > :last-child { margin-bottom: 0; }
+
+  .star-heading {
+    color: var(--hot-pink);
+    font-size: clamp(30px, 6vw, 46px);
+    line-height: 1.1;
+    margin: 0 0 16px;
+    font-weight: 700;
+    text-wrap: balance;
+  }
+  .avatar { float: left; margin: 4px 18px 8px 0; text-align: center; font-size: 13px; color: var(--ink-muted); }
+  .avatar img { display: block; width: 168px; border: 2px solid; border-color: var(--chrome-dark) var(--chrome-light) var(--chrome-light) var(--chrome-dark); }
+  .profile-text { max-width: 66ch; }
+  .profile-text p { margin: 0 0 12px; }
+  .contact { clear: both; display: flex; flex-wrap: wrap; gap: 8px 22px; padding-top: 8px; border-top: 2px dashed var(--chrome); margin-top: 14px; }
+  .contact code { font-family: var(--font-comic); font-weight: 700; user-select: all; }
+
+  .profile-window { position: relative; }
+  .pixel-hand { position: absolute; right: -14px; bottom: -36px; width: 108px; height: 120px; image-rendering: pixelated; pointer-events: none; }
+
+  .checklist { display: flex; flex-wrap: wrap; gap: 6px 26px; margin: 0; padding: 0; list-style: none; font-family: var(--font-pixel); font-size: clamp(15px, 2.6vw, 20px); color: var(--chrome-light); text-shadow: 2px 2px 0 var(--chrome-shadow), -1px -1px 0 var(--chrome-shadow); }
+  .checklist li::before { content: "\2714\FE0E  "; }
+
+  .year-label { font-family: var(--font-pixel); color: var(--hot-pink); font-size: 18px; margin: 22px 0 10px; text-align: center; }
+  .year-label:first-child { margin-top: 0; }
+  .paper-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; }
+  .paper { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 16px; align-items: start; padding: 12px; border: 2px solid; border-color: var(--chrome-light) var(--chrome-dark) var(--chrome-dark) var(--chrome-light); background: #f4f4f4; }
+  .paper.no-preview { grid-template-columns: minmax(0, 1fr); }
+  .paper img { width: 100%; aspect-ratio: 16 / 9; object-fit: contain; background: var(--paper); border: 1px solid var(--chrome); }
+  .new-badge { font-family: var(--font-pixel); font-weight: 400; font-size: 12px; background: #ff0000; color: #fff200; padding: 1px 5px; vertical-align: 2px; animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { background: #fff200; color: #ff0000; } }
+  .paper-title { font-weight: 700; margin: 0 0 4px; line-height: 1.3; }
+  .paper-authors { margin: 0 0 6px; font-size: 15px; color: var(--ink-muted); }
+  .paper-authors b { color: var(--ink); }
+  .paper-links { margin: 0; font-size: 15px; display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; }
+  .venue { font-family: var(--font-pixel); font-size: 12px; background: var(--title-navy); color: var(--chrome-light); padding: 1px 6px; }
+
+  .jokes dt { font-weight: 700; color: var(--hot-pink); }
+  .jokes dd { margin: 0 0 14px; }
+  .cat-photo { display: block; width: min(100%, 300px); margin: 0 auto 8px; border: 2px solid; border-color: var(--chrome-dark) var(--chrome-light) var(--chrome-light) var(--chrome-dark); }
+  .caption { text-align: center; margin: 0; font-size: 15px; color: var(--ink-muted); }
+
+  .meow { color: var(--paper); text-align: center; margin: 14px 0 0; font-family: var(--font-pixel); user-select: none; transition: color 0.15s; }
+  .meow:hover { color: var(--hot-pink); }
+
+  .footer-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 18px; align-items: center; }
+  .badge { font-family: var(--font-pixel); font-size: 12px; padding: 4px 8px; border: 2px solid var(--ink); background: #fff200; color: var(--ink); }
+  .badge.stripes { background: repeating-linear-gradient(45deg, #fff200 0 10px, var(--ink) 10px 20px); color: var(--ink); text-shadow: 0 0 3px #fff200, 0 0 3px #fff200; }
+  .counter { font-family: var(--font-pixel); background: var(--ink); color: #39ff14; padding: 3px 8px; letter-spacing: 3px; font-variant-numeric: tabular-nums; }
+
+  .taskbar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+    display: flex; align-items: center; gap: 6px;
+    background: var(--chrome);
+    border-top: 2px solid var(--chrome-light);
+    padding: 4px max(6px, env(safe-area-inset-right, 0px)) calc(4px + env(safe-area-inset-bottom, 0px)) max(6px, env(safe-area-inset-left, 0px));
+    font-size: 14px;
+  }
+  .task-button {
+    font-family: var(--font-comic); font-weight: 700; font-size: 14px; color: var(--ink);
+    background: var(--chrome); cursor: pointer; padding: 2px 10px;
+    border: 2px solid; border-color: var(--chrome-light) var(--chrome-shadow) var(--chrome-shadow) var(--chrome-light);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px;
+  }
+  .task-button.start { font-family: var(--font-pixel); font-weight: 400; }
+  .task-list { display: flex; gap: 6px; flex: 1; min-width: 0; overflow-x: auto; }
+  .clock { border: 2px solid; border-color: var(--chrome-dark) var(--chrome-light) var(--chrome-light) var(--chrome-dark); padding: 1px 10px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  @media (max-width: 560px) {
+    .avatar { float: none; margin: 0 auto 12px; width: fit-content; }
+    .paper { grid-template-columns: minmax(0, 1fr); }
+    .pixel-hand { width: 72px; height: 80px; right: -8px; bottom: -28px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .marquee span { animation: none; padding-left: 12px; }
+    .new-badge { animation: none; }
+  }
+</style>
 </head>
-
 <body>
-  <script>
-    function meow(e) { e.style.color = 'black' }
-    function unmeow(e) { e.style.color = 'white' }
-  </script>
-  <div style='width:600px; margin:auto auto;'>
-    <div style="float:top">
-      <div style='display:inline-block'>
-        <h1>Jixian Li</h1>
-        <p>
-          Post-Doc Research Associate<br />
-          <a href='https://sci.utah.edu/'>Scientific Computing & Imaging Institute</a> <br />
-          <a href='https://www.utah.edu/'>University of Utah</a><br />
-          Email: <a href='mailto:jixianli@sci.utah.edu'>email me</a><br />
-          cv: <a href='https://jixianli.github.io/cv.pdf'>pdf</a> <br />
-        </p>
+
+<h1 class="pixel-banner">JIXIAN LI - Scientific Visualization Homepage!</h1>
+
+<main class="wallpaper">
+  <div class="marquee" aria-label="Welcome message"><span>*** Welcome to my homepage!!! *** Best viewed at 800x600 *** Now with 100% more windows *** Hover around, there are cats hiding here ***</span></div>
+
+  <section class="window profile-window" data-window="profile" aria-labelledby="profile-title">
+    <div class="title-bar"><h2 id="profile-title">Jixian's Profile</h2><button class="title-button" data-action="close" type="button" aria-label="Close Jixian's Profile">[X]</button></div>
+    <div class="window-body">
+      <p class="star-heading">&#9734; Jixian Li 李积贤 &#9734;</p>
+      <figure class="avatar"><img src="img/photo.jpg" alt="A headshot of Jixian Li"><figcaption>(Avatar)</figcaption></figure>
+      <div class="profile-text">
+        <p>Research associate in the Scalable Computational Intelligence team at the <a href="https://tacc.utexas.edu/">Texas Advanced Computing Center</a>, <a href="https://www.utexas.edu/">University of Texas at Austin</a>. I work with scientists to design and build intelligent systems that improve and automate scientific data analysis workflows. My goal is to make scientific discovery simple and efficient.</p>
+        <p><b>Before that:</b> postdoc at the <a href="https://sci.utah.edu/">Scientific Computing and Imaging (SCI) Institute</a>, University of Utah, with Dr. Chris Johnson, building visualization methods for computational fluid dynamics, medical imaging and biomedical simulations. Ph.D. from the University of Arizona with Dr. Joshua Levine, where my dissertation studied deep learning for exploring collections of visual features of scalar fields.</p>
+        <p><b>Interests:</b> visualization, uncertainty analysis, machine learning and computational topology for scientific data. The big goal is to help scientists compute, analyze and communicate what they find.</p>
       </div>
-      <div style='display:inline-block; float:right'>
-        <img src='photo.jpeg' alt='a headshot of Jixian Li' title='my photo' height='186' />
+      <div class="contact">
+        <span>Email: <code>jixianli@tacc.utexas.edu</code></span>
+        <span>CV: <a href="https://jixianli.github.io/cv.pdf">cv.pdf</a></span>
       </div>
+      <p class="meow" aria-hidden="true">*** MEOW ***</p>
     </div>
+    <canvas class="pixel-hand" width="108" height="120" aria-hidden="true"></canvas>
+  </section>
 
-    <p onmouseover="meow(this)" onmouseout='unmeow(this)' style='color:white'> *** MEOW *** </p>
-    <h1>Me</h1>
-    <p>
-      As a postdoc research associate at the Scientific Computing and Imaging (SCI) Institute under Dr. Chris Johnson, my work focuses on developing innovative visualization methods for scientific data, such as ensembles of computational fluid dynamics, medical imaging, and biomedical simulations.
-    </p>
-    <p>
-      I received my Ph.D. from the University of Arizona, advised by Dr. Joshua Levine, where my dissertation studied deep learning approaches for exploring collections of visual features of scalar fields.
-    </p>
-    <p>
-      My research interests include visualization, uncertainty analysis, machine learning, and computational topology related to scientific data analysis. My broader goal is to help scientists to compute, analyze, and communicate their findings. 
-    </p>
+  <ul class="checklist" aria-label="Research interests">
+    <li>Visualization</li>
+    <li>Uncertainty</li>
+    <li>Topology</li>
+    <li>Machine Learning</li>
+  </ul>
 
-    <p onmouseover="meow(this)" onmouseout='unmeow(this)' style='color:white'> *** MEOW *** </p>
-    <h1>Publications</h1>
-    <!--  -->
-    <div id="pub"></div>
-    <!--  -->
-    <h1>Joke</h1>
-    <ul>
-      <li>Q: How many prolog programmers does it take to change a lightbulb?</li>
-      <li>A: Yes.</li>
-    </ul>
-    <br/>
-    <p onmouseover="meow(this)" onmouseout='unmeow(this)' style='color:white'> *** MEOW *** </p>
-    <h1>Joke1</h1>
-    <ul>
-      <li>I am going to tell you a UDP joke, but you may not get it. So I decide to tell you a TCP joke. abcdefghijklmnopqRST</li>
-    </ul>
+  <section class="window" data-window="publications" aria-labelledby="publications-title">
+    <div class="title-bar"><h2 id="publications-title">publications.txt</h2><button class="title-button" data-action="close" type="button" aria-label="Close publications.txt">[X]</button></div>
+    <div class="window-body">
+<!--PUBLICATIONS START-->
+      <p class="year-label">~*~ 2026 ~*~</p>
+      <ul class="paper-list">
+        <li class="paper no-preview"><div><p class="paper-title"><span class="new-badge" title="Forthcoming">NEW!</span> Antarctica: Looking through the Ice into the Past</p><p class="paper-authors">Francesca Samsel, Paola Arriaga, Iris Song, Duncan Young, and <b>Jixian Li</b></p><p class="paper-links"><span class="venue">SC26 Art of HPC</span> <a href="https://vimeo.com/1216237302">[video]</a></p></div></li>
+        <li class="paper no-preview"><div><p class="paper-title"><span class="new-badge" title="Forthcoming">NEW!</span> May (A)I Beautify Your Visualization? Expert Judgments of Acceptable Aesthetic Alterations</p><p class="paper-authors">Kalina Borkiewicz, <b>Jixian Li</b>, Joshua A. Levine, and Katherine E. Isaacs</p><p class="paper-links"><span class="venue">IEEE VIS</span> <a href="https://arxiv.org/abs/2607.00239">[arxiv]</a></p></div></li>
+        <li class="paper no-preview"><div><p class="paper-title"><span class="new-badge" title="Forthcoming">NEW!</span> Topology-Preserving Meshing of Implicit Scalar Fields via Monotonicity Constraints</p><p class="paper-authors">Tanner Finken, <b>Jixian Li</b>, Bei Wang, Hanqi Guo, and Joshua A. Levine</p><p class="paper-links"><span class="venue">IEEE VIS</span> <a href="https://arxiv.org/abs/2608.12142">[arxiv]</a></p></div></li>
+        <li class="paper no-preview"><div><p class="paper-title"><span class="new-badge" title="Forthcoming">NEW!</span> LoCoMapper: Local Structural Uncertainty Analysis of Mapper Graphs under Cover Perturbations</p><p class="paper-authors">Xinyuan Yan, <b>Jixian Li</b>, and Bei Wang</p><p class="paper-links"><span class="venue">Uncertainty Visualization Workshop</span></p></div></li>
+        <li class="paper no-preview"><div><p class="paper-title">WebUVisBox: A Scenario-Based Framework for Collaborative and Accessible 3-D Uncertainty Visualization on the Web</p><p class="paper-authors"><b>Jixian Li</b>, Timbwaoga A. J. Ouermi, Mengjiao Han, and Chris R. Johnson</p><p class="paper-links"><span class="venue">IEEE CG&amp;A</span> <a href="https://doi.org/10.1109/MCG.2026.3714725">[doi]</a></p></div></li>
+        <li class="paper no-preview"><div><p class="paper-title">A Single-Cell Atlas and Shiny-Based Framework for Murine Lung Injury and Remodeling</p><p class="paper-authors">Qiuming Wang, <b>Jixian Li</b>, Philip J. Moos, and Alessandro Venosa</p><p class="paper-links"><span class="venue">Frontiers in Bioinformatics</span> <a href="https://doi.org/10.3389/fbinf.2026.1886929">[doi]</a></p></div></li>
+        <li class="paper"><img src="img/hyperdifferential.jpg" alt="Teaser figure for Hyperdifferential Sensitivity Analysis with Respect to Model Discrepancy: Prior Distributions"><div><p class="paper-title">Hyperdifferential Sensitivity Analysis with Respect to Model Discrepancy: Prior Distributions</p><p class="paper-authors">Joseph Hart, Bart van Bloemen Waanders, <b>Jixian Li</b>, Timbwaoga A. J. Ouermi, and Chris R. Johnson</p><p class="paper-links"><span class="venue">International Journal for Uncertainty Quantification</span> <a href="https://doi.org/10.1615/Int.J.UncertaintyQuantification.2025059589">[doi]</a></p></div></li>
+      </ul>
+      <p class="year-label">~*~ 2025 ~*~</p>
+      <ul class="paper-list">
+        <li class="paper"><img src="img/uncertaintytube.jpg" alt="Teaser figure for Uncertainty Tube Visualization of Particle Trajectories"><div><p class="paper-title">Uncertainty Tube Visualization of Particle Trajectories</p><p class="paper-authors"><b>Jixian Li</b>, Timbwaoga A. J. Ouermi, MengJiao Han, and Chris R. Johnson</p><p class="paper-links"><span class="venue">Uncertainty Visualization Workshop</span> <a href="https://www.arxiv.org/abs/2508.13505">[arxiv]</a> <a href="https://doi.org/10.1109/UncertaintyVisualization68947.2025.00005">[doi]</a></p></div></li>
+      </ul>
+      <p class="year-label">~*~ 2024 ~*~</p>
+      <ul class="paper-list">
+        <li class="paper"><img src="img/wildfire.jpg" alt="Teaser figure for Visualizing Uncertainties in Ensemble Wildfire Forecast Simulations"><div><p class="paper-title">Visualizing Uncertainties in Ensemble Wildfire Forecast Simulations</p><p class="paper-authors"><b>Jixian Li</b>, Timbwaoga A. J. Ouermi, and Chris R. Johnson</p><p class="paper-links"><span class="venue">Uncertainty Visualization Workshop</span> <a href="https://doi.org/10.1109/UncertaintyVisualization63963.2024.00016">[doi]</a></p></div></li>
+        <li class="paper"><img src="img/squid.jpg" alt="Teaser figure for Glyph-Based Uncertainty Visualization and Analysis of Time-Varying Vector Fields"><div><p class="paper-title">Glyph-Based Uncertainty Visualization and Analysis of Time-Varying Vector Fields</p><p class="paper-authors">Timbwaoga A. J. Ouermi, <b>Jixian Li</b>, Zachary Morrow, Bart van Bloemen Waanders, and Chris R. Johnson</p><p class="paper-links"><span class="venue">Uncertainty Visualization Workshop</span> <a href="https://doi.org/10.1109/UncertaintyVisualization63963.2024.00014">[doi]</a></p></div></li>
+        <li class="paper"><img src="img/isosurface.jpg" alt="Teaser figure for Estimation and Visualization of Isosurface Uncertainty from Linear and High-Order Interpolation Methods"><div><p class="paper-title">Estimation and Visualization of Isosurface Uncertainty from Linear and High-Order Interpolation Methods</p><p class="paper-authors">Timbwaoga A. J. Ouermi, <b>Jixian Li</b>, Tushar M. Athawale, and Chris R. Johnson</p><p class="paper-links"><span class="venue">Uncertainty Visualization Workshop</span> <a href="https://doi.org/10.1109/UncertaintyVisualization63963.2024.00012">[doi]</a></p></div></li>
+        <li class="paper"><img src="img/dlsurfaceboxplot.jpg" alt="Teaser figure for Accelerated Depth Computation for Surface Boxplots with Deep Learning"><div><p class="paper-title">Accelerated Depth Computation for Surface Boxplots with Deep Learning</p><p class="paper-authors">Mengjiao Han, Tushar M. Athawale, <b>Jixian Li</b>, and Chris R. Johnson</p><p class="paper-links"><span class="venue">Uncertainty Visualization Workshop</span> <a href="https://doi.org/10.1109/UncertaintyVisualization63963.2024.00009">[doi]</a></p></div></li>
+        <li class="paper"><img src="img/volclip.jpg" alt="Teaser figure for Text-Based Transfer Function Design for Semantic Volume Rendering"><div><p class="paper-title">Text-Based Transfer Function Design for Semantic Volume Rendering</p><p class="paper-authors">Sangwon Jeong, <b>Jixian Li</b>, Chris R. Johnson, Shusen Liu, and Matthew Berger</p><p class="paper-links"><span class="venue">IEEE VIS</span> <a href="https://arxiv.org/abs/2406.15634">[arxiv]</a> <a href="https://doi.org/10.1109/VIS55277.2024.00047">[doi]</a></p></div></li>
+        <li class="paper"><img src="img/flowmap.jpg" alt="Teaser figure for Interactive Visualization of Time-Varying Flow Fields Using Particle Tracing Neural Networks"><div><p class="paper-title">Interactive Visualization of Time-Varying Flow Fields Using Particle Tracing Neural Networks</p><p class="paper-authors">MengJiao Han, <b>Jixian Li</b>, Sudhanshu Sane, Shubham Gupta, Bei Wang, Steve Petruzza, and Chris R. Johnson</p><p class="paper-links"><span class="venue">PacificVis</span> <a href="https://arxiv.org/abs/2312.14973">[arxiv]</a> <a href="https://github.com/MengjiaoH/FlowMap_Web_Viewer">[project]</a> <a href="https://doi.ieeecomputersociety.org/10.1109/PacificVis60374.2024.00015">[doi]</a></p></div></li>
+      </ul>
+      <p class="year-label">~*~ 2022 ~*~</p>
+      <ul class="paper-list">
+        <li class="paper no-preview"><div><p class="paper-title">Deep Learning Approaches for Exploring Collections of Visual Features of Scalar Fields</p><p class="paper-authors"><b>Jixian Li</b></p><p class="paper-links"><span class="venue">Ph.D. Dissertation, University of Arizona</span></p></div></li>
+        <li class="paper"><img src="img/autoencoder.jpg" alt="Teaser figure for Autoencoder-Aided Visualization of Collections of Morse Complexes"><div><p class="paper-title">Autoencoder-Aided Visualization of Collections of Morse Complexes</p><p class="paper-authors"><b>Jixian Li</b>, Danielle Van Boxel, and Joshua A. Levine</p><p class="paper-links"><span class="venue">TopoInVis Workshop</span> <a href="https://arxiv.org/abs/2210.07245">[arxiv]</a> <a href="https://doi.ieeecomputersociety.org/10.1109/TopoInVis57755.2022.00009">[doi]</a></p></div></li>
+      </ul>
+      <p class="year-label">~*~ 2021 ~*~</p>
+      <ul class="paper-list">
+        <li class="paper"><img src="img/neuralcubes.jpg" alt="Teaser figure for NeuralCubes: Deep Representations for Visual Data Exploration"><div><p class="paper-title">NeuralCubes: Deep Representations for Visual Data Exploration</p><p class="paper-authors">Zhe Wang, Dylan Cashman, Mingwei Li, <b>Jixian Li</b>, Matthew Berger, Joshua A. Levine, Remco Chang, and Carlos Scheidegger</p><p class="paper-links"><span class="venue">IEEE Big Data</span> <a href="https://arxiv.org/abs/1808.08983">[arxiv]</a> <a href="https://doi.org/10.1109/BigData52589.2021.9671390">[doi]</a></p></div></li>
+      </ul>
+      <p class="year-label">~*~ 2019 ~*~</p>
+      <ul class="paper-list">
+        <li class="paper"><img src="img/tfgan.jpg" alt="Teaser figure for A Generative Model for Volume Rendering"><div><p class="paper-title">A Generative Model for Volume Rendering</p><p class="paper-authors">Matthew Berger, <b>Jixian Li</b>, and Joshua A. Levine</p><p class="paper-links"><span class="venue">TVCG</span> <a href="https://arxiv.org/abs/1710.09545">[arxiv]</a> <a href="https://github.com/matthewberger/tfgan">[project]</a> <a href="https://doi.ieeecomputersociety.org/10.1109/TVCG.2018.2816059">[doi]</a></p></div></li>
+      </ul>
+      <!--PUBLICATIONS END-->
+      <p class="meow" aria-hidden="true">*** MEOW ***</p>
+    </div>
+  </section>
 
-    <p onmouseover="meow(this)" onmouseout='unmeow(this)' style='color:white'> *** MEOW *** </p>
-    <h1>Meow</h1>
-    <a href='https://xkcd.com/1739/'>
-      <img src='https://imgs.xkcd.com/comics/fixing_problems.png' title='credit to: xkcd.com'
-        alt='https://xkcd.com/1739/' />
-    </a>
-    <p onmouseover="meow(this)" onmouseout='unmeow(this)' style='color:white'> *** MEOW *** </p>
+  <section class="window" data-window="jokes" aria-labelledby="jokes-title">
+    <div class="title-bar"><h2 id="jokes-title">jokes.bat</h2><button class="title-button" data-action="close" type="button" aria-label="Close jokes.bat">[X]</button></div>
+    <div class="window-body">
+      <dl class="jokes">
+        <dt>Q: How many Prolog programmers does it take to change a lightbulb?</dt>
+        <dd>A: Yes.</dd>
+        <dt>A UDP joke, but you may not get it.</dt>
+        <dd>So here is a TCP joke instead: abcdefghijklmnopqRST</dd>
+      </dl>
+      <p>Also required reading: <a href="https://xkcd.com/1739/">xkcd 1739, Fixing Problems</a>.</p>
+      <p class="meow" aria-hidden="true">*** MEOW ***</p>
+    </div>
+  </section>
+
+  <section class="window" data-window="duoduo" aria-labelledby="duoduo-title">
+    <div class="title-bar"><h2 id="duoduo-title">duoduo.jpg</h2><button class="title-button" data-action="close" type="button" aria-label="Close duoduo.jpg">[X]</button></div>
+    <div class="window-body">
+      <img class="cat-photo" src="img/duoduo.jpg" alt="A photo of Duoduo">
+      <p class="caption">Duoduo</p>
+    </div>
+  </section>
+
+  <div class="footer-row">
+    <span class="badge stripes">UNDER CONSTRUCTION</span>
+    <span>Your visits: <span class="counter" id="visit-counter">000001</span></span>
+    <span class="badge">Made with Notepad</span>
   </div>
-</body>
+</main>
 
+<nav class="taskbar" aria-label="Taskbar">
+  <button class="task-button start" type="button" id="start-button">&#9733; Start</button>
+  <div class="task-list" id="task-list"></div>
+  <span class="clock" id="clock">12:00</span>
+</nav>
+
+<script>
+  const handBitmap = [
+    "......##..........",
+    ".....#ww#.........",
+    ".....#ww#.........",
+    ".....#ww#.........",
+    ".....#ww###.......",
+    ".....#ww#ww###....",
+    ".....#ww#ww#ww##..",
+    "..##.#ww#ww#ww#w#.",
+    ".#ww##wwwwwwwwww#.",
+    ".#www#wwwwwwwwww#.",
+    "..#wwwwwwwwwwwww#.",
+    "..#wwwwwwwwwwwww#.",
+    "...#wwwwwwwwwwww#.",
+    "...#wwwwwwwwwww#..",
+    "....#wwwwwwwwww#..",
+    "....#wwwwwwwwww#..",
+    ".....#wwwwwwww#...",
+    ".....##########...",
+  ];
+
+  function drawPixelHand(canvas) {
+    const context = canvas.getContext("2d");
+    const pixel = 5;
+    const offsetX = 10, offsetY = 28;
+    const colors = { "#": "#111111", "w": "#ffffff" };
+    handBitmap.forEach((row, indexRow) => {
+      [...row].forEach((cell, indexColumn) => {
+        if (!colors[cell]) return;
+        context.fillStyle = colors[cell];
+        context.fillRect(offsetX + indexColumn * pixel, offsetY + indexRow * pixel, pixel, pixel);
+      });
+    });
+    context.fillStyle = "#111111";
+    const fingertipX = offsetX + 6.5 * pixel, fingertipY = offsetY - 4;
+    const clickRays = [[-1, -1], [0, -1.3], [1, -1], [-1.3, 0], [1.3, 0]];
+    clickRays.forEach(([directionX, directionY]) => {
+      for (let step = 2; step <= 4; step++) {
+        context.fillRect(fingertipX + directionX * step * pixel - pixel / 2, fingertipY + directionY * step * pixel - pixel / 2, pixel, pixel);
+      }
+    });
+  }
+
+  function makeTitleButton(label, accessibleName) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "title-button";
+    button.textContent = label;
+    button.setAttribute("aria-label", accessibleName);
+    button.setAttribute("aria-pressed", "false");
+    return button;
+  }
+
+  function setFolded(windowElement, folded) {
+    windowElement.classList.toggle("folded", folded);
+    windowElement.querySelector('[data-action="fold"]').setAttribute("aria-pressed", String(folded));
+    if (folded) setMaximized(windowElement, false);
+  }
+
+  function setMaximized(windowElement, maximized) {
+    if (maximized) {
+      document.querySelectorAll(".window.maximized").forEach((other) => { if (other !== windowElement) setMaximized(other, false); });
+      setFolded(windowElement, false);
+    }
+    windowElement.classList.toggle("maximized", maximized);
+    const maximizeButton = windowElement.querySelector('[data-action="maximize"]');
+    maximizeButton.textContent = maximized ? "[❐]" : "[□]";
+    maximizeButton.setAttribute("aria-pressed", String(maximized));
+    document.body.classList.toggle("has-maximized-window", Boolean(document.querySelector(".window.maximized")));
+  }
+
+  function setUpWindows() {
+    const taskList = document.getElementById("task-list");
+    document.querySelectorAll(".window").forEach((windowElement) => {
+      const title = windowElement.querySelector(".title-bar h2").textContent;
+      const closeButton = windowElement.querySelector('[data-action="close"]');
+      const buttonGroup = document.createElement("span");
+      buttonGroup.className = "title-buttons";
+      const foldButton = makeTitleButton("[_]", `Fold ${title}`);
+      foldButton.dataset.action = "fold";
+      const maximizeButton = makeTitleButton("[□]", `Maximize ${title}`);
+      maximizeButton.dataset.action = "maximize";
+      closeButton.replaceWith(buttonGroup);
+      buttonGroup.append(foldButton, maximizeButton, closeButton);
+      foldButton.addEventListener("click", () => setFolded(windowElement, !windowElement.classList.contains("folded")));
+      maximizeButton.addEventListener("click", () => setMaximized(windowElement, !windowElement.classList.contains("maximized")));
+      const taskButton = document.createElement("button");
+      taskButton.type = "button";
+      taskButton.className = "task-button";
+      taskButton.textContent = title;
+      taskButton.title = `Show ${title}`;
+      taskButton.addEventListener("click", () => {
+        windowElement.hidden = false;
+        windowElement.scrollIntoView({ block: "start" });
+      });
+      taskList.appendChild(taskButton);
+      closeButton.addEventListener("click", () => {
+        setMaximized(windowElement, false);
+        windowElement.hidden = true;
+        taskButton.focus();
+      });
+    });
+    document.getElementById("start-button").addEventListener("click", () => {
+      document.querySelectorAll(".window").forEach((windowElement) => { windowElement.hidden = false; });
+      window.scrollTo({ top: 0 });
+    });
+  }
+
+  function updateClock() {
+    const now = new Date();
+    document.getElementById("clock").textContent = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  }
+
+  function countVisit() {
+    let visits = 1;
+    try {
+      visits = Number(localStorage.getItem("y2k-visits") || 0) + 1;
+      localStorage.setItem("y2k-visits", String(visits));
+    } catch (storageError) { visits = 1; }
+    document.getElementById("visit-counter").textContent = String(visits).padStart(6, "0");
+  }
+
+  drawPixelHand(document.querySelector(".pixel-hand"));
+  setUpWindows();
+  updateClock();
+  setInterval(updateClock, 30000);
+  countVisit();
+</script>
+</body>
 </html>
