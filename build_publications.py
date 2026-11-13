@@ -1,7 +1,7 @@
 """Rebuild the publication list in index.html from publication_list.csv.
 
 usage: uv run --no-project python build_publications.py  (from the repository root)
-Rows with an empty img column get no preview slot; forthcoming = yes adds a NEW! badge. Images are looked up as img/<stem of img>.jpg.
+Rows with an empty img column get no preview slot; forthcoming = yes adds a NEW! badge.
 """
 import csv
 import html
@@ -23,8 +23,7 @@ def paper_item(row):
     text = f'<div><p class="paper-title">{new_badge}{title}</p><p class="paper-authors">{authors}</p><p class="paper-links">{" ".join(links)}</p></div>'
     if not row["img"]:
         return f'        <li class="paper no-preview">{text}</li>'
-    image = "img/" + Path(row["img"]).stem + ".jpg"
-    return f'        <li class="paper"><img src="{image}" alt="Teaser figure for {title}">{text}</li>'
+    return f'        <li class="paper"><img src="{html.escape(row["img"])}" alt="Teaser figure for {title}">{text}</li>'
 
 
 def publication_block(rows):
