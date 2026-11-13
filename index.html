@@ -178,7 +178,9 @@
 
   .jokes dt { font-weight: 700; color: var(--duoduo-gray); }
   .jokes dd { margin: 0 0 14px; }
-  .cat-photo { display: block; width: min(100%, 300px); margin: 0 auto 8px; border: 2px solid; border-color: var(--chrome-dark) var(--chrome-light) var(--chrome-light) var(--chrome-dark); }
+  .slideshow { position: relative; width: min(100%, 360px); aspect-ratio: 4 / 5; margin: 0 auto 8px; background: var(--ink); border: 2px solid; border-color: var(--chrome-dark) var(--chrome-light) var(--chrome-light) var(--chrome-dark); }
+  .slide { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity 0.5s; }
+  .slide.active { opacity: 1; }
   .caption { text-align: center; margin: 0; font-size: 15px; color: var(--ink-muted); }
 
   .meow { color: var(--paper); text-align: center; margin: 14px 0 0; font-family: var(--font-pixel); user-select: none; transition: color 0.15s; }
@@ -215,6 +217,7 @@
   @media (prefers-reduced-motion: reduce) {
     .marquee span { animation: none; padding-left: 12px; }
     .new-badge { animation: none; }
+    .slide { transition: none; }
   }
 </style>
 </head>
@@ -311,9 +314,21 @@
   </section>
 
   <section class="window" data-window="duoduo" aria-labelledby="duoduo-title">
-    <div class="title-bar"><h2 id="duoduo-title">duoduo.jpg</h2><button class="title-button" data-action="close" type="button" aria-label="Close duoduo.jpg">[X]</button></div>
+    <div class="title-bar"><h2 id="duoduo-title">duoduo.scr</h2><button class="title-button" data-action="close" type="button" aria-label="Close duoduo.scr">[X]</button></div>
     <div class="window-body">
-      <img class="cat-photo" src="img/duoduo.jpg" alt="A photo of Duoduo">
+      <div class="slideshow" id="duoduo-slideshow" aria-roledescription="slideshow" aria-label="Photos of Duoduo">
+        <img class="slide" src="img/duoduo.jpg" alt="Duoduo as a kitten, asleep on a red blanket">
+        <img class="slide" src="img/duoduo-01.jpg" alt="Close-up of Duoduo's face, looking to the side">
+        <img class="slide" src="img/duoduo-02.jpg" alt="Duoduo gazing off to one side">
+        <img class="slide" src="img/duoduo-03.jpg" alt="Extreme close-up of Duoduo's eyes and whiskers">
+        <img class="slide" src="img/duoduo-04.jpg" alt="Duoduo curled up asleep on a bed in front of a pink pillow">
+        <img class="slide" src="img/duoduo-05.jpg" alt="Duoduo sitting on a kitchen counter, staring at the camera">
+        <img class="slide" src="img/duoduo-06.jpg" alt="Duoduo glancing back over a shoulder">
+        <img class="slide" src="img/duoduo-07.jpg" alt="Duoduo lying upside down on the carpet">
+        <img class="slide" src="img/duoduo-08.jpg" alt="Duoduo lounging on the carpet with crossed legs">
+        <img class="slide" src="img/duoduo-09.jpg" alt="Duoduo stepping out from behind a door, next to a fuzzy slipper">
+        <img class="slide" src="img/duoduo-10.jpg" alt="Duoduo licking lips inside a cat-tree cubby">
+      </div>
       <p class="caption">Duoduo</p>
     </div>
   </section>
@@ -440,6 +455,34 @@
     });
   }
 
+  function shuffledIndices(count, avoidFirst) {
+    const indices = Array.from({ length: count }, (_, index) => index);
+    for (let index = count - 1; index > 0; index--) {
+      const swapWith = Math.floor(Math.random() * (index + 1));
+      [indices[index], indices[swapWith]] = [indices[swapWith], indices[index]];
+    }
+    if (count > 1 && indices[0] === avoidFirst) [indices[0], indices[count - 1]] = [indices[count - 1], indices[0]];
+    return indices;
+  }
+
+  function startSlideshow(container, intervalMilliseconds) {
+    const slides = [...container.querySelectorAll(".slide")];
+    let order = shuffledIndices(slides.length, -1);
+    let position = 0;
+    let current = order[0];
+    slides[current].classList.add("active");
+    setInterval(() => {
+      position += 1;
+      if (position >= order.length) {
+        order = shuffledIndices(slides.length, current);
+        position = 0;
+      }
+      slides[current].classList.remove("active");
+      current = order[position];
+      slides[current].classList.add("active");
+    }, intervalMilliseconds);
+  }
+
   function updateClock() {
     const now = new Date();
     document.getElementById("clock").textContent = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
@@ -459,6 +502,7 @@
   updateClock();
   setInterval(updateClock, 30000);
   countVisit();
+  startSlideshow(document.getElementById("duoduo-slideshow"), 2000);
 </script>
 </body>
 </html>
